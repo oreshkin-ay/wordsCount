@@ -1,19 +1,10 @@
 const { readLine, readStopWords } = require('./utils');
+const wordsCount = require('./wordsCount');
 
 (async function inner() {
-    const result = await readLine('Enter text: ');
-    const words = result.match(/[a-zA-Z]+/g);
-    let count = 0;
+    const userString = await readLine('Enter text: ');
+    const stopWords = await readStopWords();
+    const { count, uniqueCount } = wordsCount(userString, stopWords);
 
-    if (words) {
-        const stopWords = await readStopWords();
-        const setOfWords = new Set(stopWords);
-        for (let word of words) {
-            if (!setOfWords.has(word.toLowerCase())) {
-                count++;
-            }
-        }
-    }
-
-    console.log(`Number of words: ${count}`);
+    console.log(`Number of words: ${count}, unique: ${uniqueCount}`);
 })()
